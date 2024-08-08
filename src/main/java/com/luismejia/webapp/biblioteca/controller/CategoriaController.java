@@ -29,7 +29,7 @@ public class CategoriaController {
 
     @GetMapping("/categorias")
     public List<Categoria> listarCategorias(){  
-        return categoriaService.listarCategorias(null);
+        return categoriaService.listarCategorias();
     }
 
     @GetMapping("/categoria")
@@ -41,17 +41,16 @@ public class CategoriaController {
             return ResponseEntity.badRequest().body(null);
         }
     }
-
-    @PostMapping("/categoria")
-    public ResponseEntity<Map<String, String>> agregarCategoria(@RequestParam Categoria categoria){
-        Map<String, String>response = new HashMap<>();
-        try{ // Bien
+    @PostMapping("/")
+    public ResponseEntity<Map<String,String >> agregarCategoria(@RequestParam Categoria categoria) {
+        Map<String,String> response = new HashMap<>();
+        try {
             categoriaService.guardarCategoria(categoria);
-            response.put("message", "Categoria creada con éxito");
+            response.put("message","Categoria agregada con exito" );
             return ResponseEntity.ok(response);
-        }catch(Exception e){ // Todo mal papi
-            response.put("message", "eRROR");
-            response.put("err", "Hubo un error al crear la categoria");
+        } catch (Exception e) {
+            response.put("message" ,"error" );
+            response.put("err" ,"No se ha agregado la Categoria" );
             return ResponseEntity.badRequest().body(response);
         }
     }

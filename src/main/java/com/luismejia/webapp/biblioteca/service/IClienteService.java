@@ -5,7 +5,7 @@ import com.luismejia.webapp.biblioteca.model.Cliente;
 
 public interface IClienteService {
     
-    public List<Cliente> listarClientes(Cliente cliente);
+    public List<Cliente> listarClientes();
 
     public Cliente guardarCliente(Cliente cliente);
 

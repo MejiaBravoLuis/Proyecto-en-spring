@@ -6,7 +6,7 @@ import com.luismejia.webapp.biblioteca.model.Categoria;
 
 public interface ICategoriaService {
 
-    public List<Categoria> listarCategorias(Categoria categoria);
+    public List<Categoria> listarCategorias();
 
     public Categoria guardarCategoria(Categoria categoria);
 

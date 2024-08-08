@@ -13,8 +13,9 @@ public class ClienteService implements IClienteService{
 
     @Autowired
     ClienteRepository clienteRepository;
+    
     @Override
-    public List<Cliente> listarClientes(Cliente cliente){
+    public List<Cliente> listarClientes(){
         return clienteRepository.findAll();
     }
 
