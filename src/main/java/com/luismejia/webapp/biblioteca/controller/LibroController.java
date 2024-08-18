@@ -23,12 +23,12 @@ import com.luismejia.webapp.biblioteca.service.LibroService;
 @RestController
 @RequestMapping("")
 public class LibroController {
-    
+
     @Autowired
     LibroService libroService;
 
     @GetMapping("/libros")
-    public ResponseEntity<List<Libro>> listarLibros(){
+    public ResponseEntity<List<Libro>> listarLibros() {
         try {
             return ResponseEntity.ok(libroService.listarLibros());
         } catch (Exception e) {
@@ -44,41 +44,43 @@ public class LibroController {
             return ResponseEntity.badRequest().body(null);
         }
     }
+    
 
     @PostMapping("/libro")
-    public ResponseEntity<Map<String, String>> agregarLibro(@RequestBody Libro libro){
-        Map<String, String> response = new HashMap<>();
+    public ResponseEntity<Map<String,String>> agregarLibro(@RequestBody Libro libro) {
+        Map<String,String> response = new HashMap<>();
+
         try {
             libroService.guardarLibro(libro);
-            response.put("message", "Libro creado con éxito");
+            response.put("message", "Se ha agregado un libro con exito");
             return ResponseEntity.ok(response);
         } catch (Exception e) {
-            response.put("message", "error");
-            response.put("err", "Hubo un error al crear el libro");
-            return ResponseEntity.badRequest().body(null);
+            response.put("message" ,"error" );
+            response.put("err" ,"No se ha podido agregar el libro" );
+            return ResponseEntity.badRequest().body(response);
         }
     }
 
     @PutMapping("/libro")
-    public ResponseEntity<Map<String, String>> editarLibro(@RequestParam Long id, @RequestBody Libro libroNuevo){
-        Map<String, String> response = new HashMap<>();
+    public ResponseEntity <Map<String, String>> editarLibro(@RequestParam Long id, @RequestBody Libro libroNuevo) {
+        Map<String,String> response = new HashMap<>();
         try {
             Libro libro = libroService.buscarLibroPorId(id);
             libro.setAutor(libroNuevo.getAutor());
             libro.setCategoria(libroNuevo.getCategoria());
             libro.setCluster(libroNuevo.getCluster());
-            libro.setDisponibilidad(libroNuevo.getDisponibilidad());
+            libro.setDisponibilidad(true);
             libro.setEditorial(libroNuevo.getEditorial());
             libro.setIsbn(libroNuevo.getIsbn());
             libro.setNombre(libroNuevo.getNombre());
             libro.setNumeroEstanteria(libroNuevo.getNumeroEstanteria());
             libro.setSinopsis(libroNuevo.getSinopsis());
-            response.put("message", "Libro editado exitosamente");
             libroService.guardarLibro(libro);
+            response.put("message", "Se he editado  el libro" + libro.getNombre() + "correctamente");
             return ResponseEntity.ok(response);
         } catch (Exception e) {
-            response.put("message", "error");
-            response.put("err", "El libro no se pudo editar");
+            response.put("message" ,"error" );
+            response.put("err" ,"No se ha podido editar el libro con exito" );
             return ResponseEntity.badRequest().body(response);
         }
     }
@@ -88,11 +90,11 @@ public class LibroController {
         Map<String, String> response = new HashMap<>();
         try {
             Libro libro = libroService.buscarLibroPorId(id);
- 
+
             libroService.eliminarLibro(libro);
             response.put("message", "Se ha elimnado con exito");
             return ResponseEntity.ok(response);
- 
+
         } catch (Exception e) {
             response.put("message" ,"error" );
             response.put("err" ,"No se ha eliminado con exito" );

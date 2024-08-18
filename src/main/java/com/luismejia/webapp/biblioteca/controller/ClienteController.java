@@ -9,11 +9,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.luismejia.webapp.biblioteca.model.Cliente;
@@ -32,7 +32,7 @@ public class ClienteController{
     }
 
     @GetMapping("/cliente")
-    public ResponseEntity<Cliente> buscarClientePorDPI(@RequestParam Long dpi){
+    public ResponseEntity<Cliente> buscarClientePorId(@PathVariable Long dpi){
         try {
             Cliente cliente = clienteService.buscarClientePorDPI(dpi);
             return ResponseEntity.ok(cliente);
@@ -56,13 +56,13 @@ public class ClienteController{
     }
 
     @PutMapping("/cliente")
-    public ResponseEntity <Map<String, String>> editarCliente(@RequestParam Long dpi, @RequestBody Cliente clienteNew){
+    public ResponseEntity <Map<String, String>> editarCliente(@PathVariable Long dpi, @RequestBody Cliente clienteNuevo){
         Map<String,String> response = new HashMap<>();
         try {
             Cliente cliente = clienteService.buscarClientePorDPI(dpi);
-            cliente.setNombre(clienteNew.getNombre());
-            cliente.setApellido(clienteNew.getApellido());
-            cliente.setTelefono(clienteNew.getTelefono());
+            cliente.setNombre(clienteNuevo.getNombre());
+            cliente.setApellido(clienteNuevo.getApellido());
+            cliente.setTelefono(clienteNuevo.getTelefono());
             clienteService.guardarCliente(cliente);
             response.put("message", "Se he modificado correctamente");
             return ResponseEntity.ok(response);
@@ -76,7 +76,7 @@ public class ClienteController{
     }
 
     @DeleteMapping("/cliente")
-    public ResponseEntity<Map<String, String>> eliminarCliente(@RequestParam Long dpi){
+    public ResponseEntity<Map<String, String>> eliminarCliente(@PathVariable Long dpi){
         Map<String, String> response = new HashMap<>();
         try {
             Cliente cliente = clienteService.buscarClientePorDPI(dpi);
@@ -91,7 +91,5 @@ public class ClienteController{
             return ResponseEntity.badRequest().body(response);
         }
     }
-
-
     
 }

@@ -53,9 +53,17 @@ public class EmpleadoCotroller {
         Map<String,String> response = new HashMap<>();
 
         try {
-            empleadoService.guardarEmpleado(empleado);
-            response.put("message", "Se ha creado con exito");
-            return ResponseEntity.ok(response);
+            if (!empleadoService.verificacionDpiDuplicado(empleado)) {
+                empleadoService.guardarEmpleado(empleado);
+                response.put("message", "Se ha creado con exito");
+                return ResponseEntity.ok(response);
+            }else{
+                response.put("message", "error");
+                response.put("err", "El dpi se encuentra duplicado");
+                return ResponseEntity.badRequest().body(response);
+            } 
+            
+            
         } catch (Exception e) {
             response.put("message" ,"error" );
             response.put("err" ,"No se ha agregado con exito" );
@@ -68,19 +76,24 @@ public class EmpleadoCotroller {
         Map<String,String> response = new HashMap<>();
         try {
             Empleado empleado = empleadoService.buscarEmpleadoPorId(id);
-
             empleado.setApellido(empleadoNuevo.getApellido());
             empleado.setDireccion(empleadoNuevo.getDireccion());
-            empleado.setDpi(empleadoNuevo.getDpi());
+            empleado.setDpi(empleado.getDpi());
             empleado.setNombre(empleadoNuevo.getNombre());
             empleado.setTelefono(empleadoNuevo.getTelefono());
-
-            empleadoService.guardarEmpleado(empleado);
-            response.put("message", "Se he modificado correctamente");
-            return ResponseEntity.ok(response);
+            if (!empleadoService.verificacionDpiDuplicado(empleado)) {
+                empleadoService.guardarEmpleado(empleado);
+                response.put("message", "Empelado editado con éxito");
+                return ResponseEntity.ok(response);
+            }else{
+                response.put("message", "error");
+                response.put("err", "El dpi se encuentra duplicado");
+                return ResponseEntity.badRequest().body(response);
+            }
+            
         } catch (Exception e) {
             response.put("message" ,"error" );
-            response.put("err" ,"No se ha modificado con exito" );
+            response.put("err" ,"No se ha podido modificar" );
             return ResponseEntity.badRequest().body(response);
         }
     }
